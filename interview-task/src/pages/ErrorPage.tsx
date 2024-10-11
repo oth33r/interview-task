@@ -1,6 +1,6 @@
 const ErrorPage = () => {
   return (
-    <h1 className="text-3xl font-bold text-white">
+    <h1 className="text-3xl font-bold text-black">
       Something went wrong, sorry!
     </h1>
   );
