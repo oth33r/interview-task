@@ -12,6 +12,7 @@ const useCustomForm = <T extends FieldValues>({schema}: useFormProps<T>) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<T>({
     mode: "onSubmit",
@@ -27,6 +28,7 @@ const useCustomForm = <T extends FieldValues>({schema}: useFormProps<T>) => {
 
   return {
     buttonRef,
+    reset,
     errors,
     register,
     handleSubmit,

@@ -2,10 +2,12 @@ import z from "zod";
 import { LoginSchema } from "@/schemas/LoginSchema";
 import { RegisterSchema } from "@/schemas/RegisterSchema";
 import { ChangePasswordSchema } from "@/schemas/ChangePasswordSchema";
+import { ArticleSchema } from "@/schemas/ArticleSchema";
 
 export type LoginType = z.infer<typeof LoginSchema>;
 export type RegisterType = z.infer<typeof RegisterSchema>;
 export type ChangePasswordType = z.infer<typeof ChangePasswordSchema>;
+export type ArticleInput = z.infer<typeof ArticleSchema>;
 
 export type AuthType = LoginType | RegisterType;
 

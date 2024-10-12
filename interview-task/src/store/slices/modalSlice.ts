@@ -6,9 +6,7 @@ interface modalState {
 }
 
 const initialState: modalState = { 
-  modals: {
-    "changePassword": false
-  }
+  modals: {}
 }
 
 const modalsSlice = createSlice({
@@ -17,11 +15,13 @@ const modalsSlice = createSlice({
   reducers: {
     openModal: (state, action: PayloadAction<string>) => {
       if (state.modals[action.payload] !== undefined) {
+        document.body.style.overflow = 'hidden';
         state.modals[action.payload] = true;
       }
     },
     closeModal: (state, action: PayloadAction<string>) => {
       if (state.modals[action.payload] !== undefined) {
+        document.body.style.overflow = 'auto';
         state.modals[action.payload] = false;
       }
     },

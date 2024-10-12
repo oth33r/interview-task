@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import ErrorPage from "@/pages/ErrorPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Spinner from "./components/Spinner";
+import Article from "./pages/Article";
 
 const Login = lazy(() => import("@/pages/Login"));
 const Register = lazy(() => import("@/pages/Register"));
@@ -23,6 +24,14 @@ const App = () => {
           />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route
+            path="/:articleId"
+            element={
+              <ProtectedRoute>
+                <Article />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="*"
             element={

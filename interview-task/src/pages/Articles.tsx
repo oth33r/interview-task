@@ -4,7 +4,8 @@ import Menu from "@/components/Menu";
 import Spinner from "@/components/Spinner";
 import { useGetArticlesQuery } from "@/store/apis/articlesApi";
 const Articles = () => {
-  const { isLoading, isError, data: articles } = useGetArticlesQuery();
+  const { isLoading, isError, data: articles = [] } = useGetArticlesQuery();
+  console.log(articles);
 
   if (isError) {
     return <div>Error!</div>;
@@ -17,14 +18,15 @@ const Articles = () => {
   return (
     <div className="flex gap-4 mt-5">
       <ArticleList>
-        {articles &&
-          articles.map((article) => (
-            <ArticleItem
-              key={article.id}
-              image={article.image}
-              title={article.title}
-            />
-          ))}
+        {articles.map((article) => (
+          <ArticleItem
+            key={article.id}
+            id={article.id}
+            slug={article.slug}
+            image={article.image}
+            title={article.title}
+          />
+        ))}
       </ArticleList>
       <Menu />
     </div>
