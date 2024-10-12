@@ -1,4 +1,4 @@
-import { api } from "@/lib/utils";
+import { apiInstance } from "@/store/api";
 import React, { useLayoutEffect, useState } from "react";
 
 interface AuthProviderProps {
@@ -12,18 +12,20 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   );
 
   useLayoutEffect(() => {
-    const requestInterceptor = api.interceptors.request.use((config) => {
-      config.headers.Authorization = token
-        ? `Bearer ${token}`
-        : config.headers.Authorization;
-      return config;
-    });
+    const requestInterceptor = apiInstance.interceptors.request.use(
+      (config) => {
+        config.headers.Authorization = token
+          ? `Bearer ${token}`
+          : config.headers.Authorization;
+        return config;
+      }
+    );
 
-    return () => api.interceptors.request.eject(requestInterceptor);
+    return () => apiInstance.interceptors.request.eject(requestInterceptor);
   }, [token]);
 
   useLayoutEffect(() => {
-    const responseInterceptor = api.interceptors.response.use(
+    const responseInterceptor = apiInstance.interceptors.response.use(
       (response) => response,
       async (err) => {
         const request = err.config;
@@ -33,7 +35,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
             const tokens = localStorage.getItem("user");
 
             const response = (
-              await api.post("/token/refresh/", {
+              await apiInstance.post("/token/refresh/", {
                 refresh: JSON.parse(tokens!)["refresh"],
               })
             ).data;
@@ -47,7 +49,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
             request.headers.Authorization = `Bearer ${response.access}`;
 
-            return api(request);
+            return apiInstance(request);
           } catch {
             setToken(null);
           }
@@ -57,7 +59,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       }
     );
 
-    return () => api.interceptors.response.eject(responseInterceptor);
+    return () => apiInstance.interceptors.response.eject(responseInterceptor);
   }, []);
 
   return children;

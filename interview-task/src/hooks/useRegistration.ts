@@ -3,11 +3,13 @@ import { api } from '@/lib/utils';
 import { AxiosError } from 'axios';
 import { useState } from 'react'
 import { SubmitHandler } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
 const useRegistration = () => {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<AxiosError>();
+  const navigate = useNavigate()
 
   const handleData: SubmitHandler<RegisterType> = async (data) => {
     try {
@@ -19,8 +21,8 @@ const useRegistration = () => {
           "username": data.username,
           "password": data.password
       });
-      setData(response.data)
-      console.log(response);
+      setData(response.data);
+      navigate("/login");
     } catch (err) {
       console.log(err)
       setError(err as AxiosError);

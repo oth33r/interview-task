@@ -9,16 +9,32 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
-import { Link } from "react-router-dom";
-import { LoginSchema } from "@/schemas/LoginSchema";
 import Error from "@/components/Error";
 import useCustomForm from "@/hooks/useCustomForm";
-import useLogin from "@/hooks/useLogin";
+import { Link, useNavigate } from "react-router-dom";
+import { LoginSchema } from "@/schemas/LoginSchema";
+import { SubmitHandler } from "react-hook-form";
+import { LoginType } from "@/lib/types";
+import { useEffect } from "react";
+import { useLoginUserMutation } from "@/store/apis/authApi";
 
 const Login = () => {
   const { handleClick, handleSubmit, register, buttonRef, errors } =
     useCustomForm({ schema: LoginSchema });
-  const { isLoading, handleData } = useLogin();
+  const navigate = useNavigate();
+  const [loginUser, { isLoading, isError, isSuccess, error }] =
+    useLoginUserMutation();
+
+  useEffect(() => {
+    if (isError) {
+      console.log(error);
+    }
+    if (isSuccess) navigate("/");
+  }, [navigate, isSuccess, isError, error]);
+
+  const handleData: SubmitHandler<LoginType> = (data) => {
+    loginUser(data);
+  };
 
   return (
     <Card className="w-[600px] bg-primary px-[50px] drop-shadow-xl border-none">
@@ -75,11 +91,13 @@ const Login = () => {
           variant={"secondary"}
           type="submit"
           disabled={isLoading}
-          className="w-full rounded-full h-[50px] font-bold text-lg"
           onClick={handleClick}
         >
           Log in
         </Button>
+        {isError && (
+          <span className="text-rose-500">Something went wrong, try again</span>
+        )}
         <span className="text-white">
           Don't have an account?{" "}
           <Link to="/register" className="text-blue-500">

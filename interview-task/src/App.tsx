@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import ErrorPage from "@/pages/ErrorPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Spinner from "./components/Spinner";
 
 const Login = lazy(() => import("@/pages/Login"));
 const Register = lazy(() => import("@/pages/Register"));
@@ -9,8 +10,8 @@ const Articles = lazy(() => import("@/pages/Articles"));
 
 const App = () => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <div className="min-h-screen flex justify-center items-center">
+    <div className="min-h-screen flex justify-center items-center">
+      <Suspense fallback={<Spinner />}>
         <Routes>
           <Route
             path="/"
@@ -31,8 +32,8 @@ const App = () => {
             }
           />
         </Routes>
-      </div>
-    </Suspense>
+      </Suspense>
+    </div>
   );
 };
 

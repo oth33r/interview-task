@@ -1,20 +1,34 @@
-import { api } from "@/lib/utils";
-import { useEffect, useState } from "react";
-
+import ArticleItem from "@/components/Article/ArticleItem";
+import ArticleList from "@/components/Article/ArticleList";
+import Menu from "@/components/Menu";
+import Spinner from "@/components/Spinner";
+import { useGetArticlesQuery } from "@/store/apis/articlesApi";
 const Articles = () => {
-  const [data, setData] = useState();
+  const { isLoading, isError, data: articles } = useGetArticlesQuery();
 
-  useEffect(() => {
-    const fetchArticles = async () => {
-      const response = await api.get("/articles/");
-      setData(response.data);
-    };
+  if (isError) {
+    return <div>Error!</div>;
+  }
 
-    fetchArticles();
-  }, []);
+  if (isLoading) {
+    return <Spinner />;
+  }
 
-  console.log(data);
-  return <div>1</div>;
+  return (
+    <div className="flex gap-4 mt-5">
+      <ArticleList>
+        {articles &&
+          articles.map((article) => (
+            <ArticleItem
+              key={article.id}
+              image={article.image}
+              title={article.title}
+            />
+          ))}
+      </ArticleList>
+      <Menu />
+    </div>
+  );
 };
 
 export default Articles;

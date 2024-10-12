@@ -10,15 +10,31 @@ import {
 import { Input } from "@/components/ui/input";
 import { RegisterSchema } from "@/schemas/RegisterSchema";
 import { Label } from "@radix-ui/react-label";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useCustomForm from "@/hooks/useCustomForm";
 import Error from "@/components/Error";
-import useRegistration from "@/hooks/useRegistration";
+import { SubmitHandler } from "react-hook-form";
+import { RegisterType } from "@/lib/types";
+import { useRegisterUserMutation } from "@/store/apis/authApi";
+import { useEffect } from "react";
 
 const Register = () => {
   const { handleClick, handleSubmit, register, buttonRef, errors } =
     useCustomForm({ schema: RegisterSchema });
-  const { isLoading, handleData } = useRegistration();
+  const [registerUser, { isLoading, isError, isSuccess, error }] =
+    useRegisterUserMutation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isError) {
+      console.log(error);
+    }
+    if (isSuccess) navigate("/login");
+  }, [navigate, isSuccess, isError, error]);
+
+  const handleData: SubmitHandler<RegisterType> = (data) => {
+    registerUser(data);
+  };
 
   return (
     <Card className="w-[600px] bg-primary px-[50px] drop-shadow-xl border-none">
@@ -130,6 +146,9 @@ const Register = () => {
         >
           Sign up
         </Button>
+        {isError && (
+          <span className="text-rose-500">Something went wrong, try again</span>
+        )}
         <span className="text-white">
           Already have an account?{" "}
           <Link to="/login" className="text-blue-500">
