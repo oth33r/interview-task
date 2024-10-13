@@ -16,7 +16,7 @@ const ArticleItem = ({ image, title, slug, id }: ArticleItemProps) => {
       <img
         src={image ?? ""}
         alt="Article image"
-        className="w-full rounded-lg h-3/4 object-cover pointer-events-none select-none"
+        className="w-full rounded-lg h-3/4 aspect-square object-cover pointer-events-none select-none"
       />
       <div className="flex flex-col gap-4">
         <h2 className="font-semibold text-3xl truncate">{title}</h2>

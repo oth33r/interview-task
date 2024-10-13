@@ -37,12 +37,12 @@ const Register = () => {
   };
 
   return (
-    <Card className="w-[600px] bg-primary px-[50px] drop-shadow-xl border-none">
+    <Card className="w-[600px] bg-primary px-[20px] sm:px-[50px] drop-shadow-xl border-none">
       <CardHeader className="items-center">
-        <CardTitle className="text-white text-6xl font-semibold">
+        <CardTitle className="text-white text-3xl sm:text-6xl font-semibold">
           Create account!
         </CardTitle>
-        <CardDescription className="text-lg font-semibold">
+        <CardDescription className="sm:text-lg text-sm font-semibold">
           Let's get started.
         </CardDescription>
       </CardHeader>

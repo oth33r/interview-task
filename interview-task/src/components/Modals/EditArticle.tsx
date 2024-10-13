@@ -16,17 +16,18 @@ import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useEffect } from "react";
 import { closeModal } from "@/store/slices/modalSlice";
 import { ArticleSchema } from "@/schemas/ArticleSchema";
-import { ArticleInput } from "@/lib/types";
-import { useAddArticleMutation } from "@/store/apis/articlesApi";
+import { Article, ArticleInput } from "@/lib/types";
+import { useEditArticleMutation } from "@/store/apis/articlesApi";
 
 interface NewModalProps {
   modalName: string;
+  article: Article;
 }
 
-const NewArticle = ({ modalName }: NewModalProps) => {
+const EditArticle = ({ modalName, article }: NewModalProps) => {
   const { handleClick, handleSubmit, register, buttonRef, errors, reset } =
     useCustomForm({ schema: ArticleSchema });
-  const [addArticle, { isLoading, isSuccess }] = useAddArticleMutation();
+  const [editArticle, { isLoading, isSuccess }] = useEditArticleMutation();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -37,7 +38,7 @@ const NewArticle = ({ modalName }: NewModalProps) => {
   }, [dispatch, isSuccess, reset, modalName]);
 
   const handleData: SubmitHandler<ArticleInput> = (data) => {
-    addArticle(data);
+    editArticle({ id: article.id, data });
   };
 
   const handleClose = () => {
@@ -49,7 +50,7 @@ const NewArticle = ({ modalName }: NewModalProps) => {
     <Card className="w-[600px] bg-primary px-[50px] drop-shadow-xl border-none relative">
       <CardHeader className="items-center">
         <CardTitle className="text-white text-5xl font-semibold">
-          Add new article
+          Edit article
         </CardTitle>
         <button
           className="absolute text-white top-2 right-4"
@@ -69,6 +70,7 @@ const NewArticle = ({ modalName }: NewModalProps) => {
             </Label>
             <Input
               id="title"
+              defaultValue={article.title}
               placeholder="Type title"
               className={`${errors.title ? "border-rose-500" : "border-white"}`}
               {...register("title")}
@@ -84,8 +86,8 @@ const NewArticle = ({ modalName }: NewModalProps) => {
             </Label>
             <textarea
               rows={4}
-              id="content"
               placeholder="Type content"
+              defaultValue={article.content}
               className={`${
                 errors.content && "border-rose-500"
               } rounded-lg bg-primary border border-white resize-none text-white py-1.5 px-2 text-sm placeholder:text-neutral-500`}
@@ -93,15 +95,7 @@ const NewArticle = ({ modalName }: NewModalProps) => {
             />
             <Error error={errors.content} />
           </div>
-          <div>
-            <Label
-              htmlFor="image"
-              className="font-semibold text-white uppercase"
-            >
-              Image
-            </Label>
-            <Input type="file" id="image" {...register("image")} />
-          </div>
+          <div>image</div>
           <button hidden ref={buttonRef} />
         </form>
       </CardContent>
@@ -112,11 +106,11 @@ const NewArticle = ({ modalName }: NewModalProps) => {
           onClick={handleClick}
           disabled={isLoading}
         >
-          Add new article
+          Edit article
         </Button>
       </CardFooter>
     </Card>
   );
 };
 
-export default NewArticle;
+export default EditArticle;

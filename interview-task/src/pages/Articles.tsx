@@ -5,7 +5,6 @@ import Spinner from "@/components/Spinner";
 import { useGetArticlesQuery } from "@/store/apis/articlesApi";
 const Articles = () => {
   const { isLoading, isError, data: articles = [] } = useGetArticlesQuery();
-  console.log(articles);
 
   if (isError) {
     return <div>Error!</div>;

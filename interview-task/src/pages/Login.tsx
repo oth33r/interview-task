@@ -37,12 +37,12 @@ const Login = () => {
   };
 
   return (
-    <Card className="w-[600px] bg-primary px-[50px] drop-shadow-xl border-none">
+    <Card className="w-[600px] bg-primary px-[20px] sm:px-[50px] drop-shadow-xl border-none">
       <CardHeader className="items-center">
-        <CardTitle className="text-white text-6xl font-semibold">
+        <CardTitle className="text-white sm:text-6xl font-semibold text-4xl">
           Hi there!
         </CardTitle>
-        <CardDescription className="text-lg font-semibold">
+        <CardDescription className="sm:text-lg text-sm font-semibold">
           Sign in to continue.
         </CardDescription>
       </CardHeader>
