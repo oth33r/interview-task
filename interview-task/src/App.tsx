@@ -3,10 +3,10 @@ import { Route, Routes } from "react-router-dom";
 import ErrorPage from "@/pages/ErrorPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Spinner from "./components/Spinner";
-import Article from "./pages/Article";
 
 const Login = lazy(() => import("@/pages/Login"));
 const Register = lazy(() => import("@/pages/Register"));
+const Article = lazy(() => import("@/pages/Article"));
 const Articles = lazy(() => import("@/pages/Articles"));
 
 const App = () => {
