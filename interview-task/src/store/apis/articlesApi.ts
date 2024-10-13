@@ -15,15 +15,24 @@ export const articlesApi = createApi({
     }),
     addArticle: builder.mutation<void, ArticleInput>({
       queryFn: async (data) => {
-        const formData = new FormData();
-        formData.append("title", data.title);
-        formData.append("content", data.content);
-        formData.append("image", data.image[0]);
-        return await apiInstance.post('/articles/', formData, {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
-        })
+        if (data.image.length > 0) {
+          const formData = new FormData();
+          formData.append("title", data.title);
+          formData.append("content", data.content);
+          formData.append("image", data.image[0]);
+
+          return await apiInstance.post('/articles/', formData, {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
+          })
+        }
+        
+        return await apiInstance.post('/articles/', {
+          "title": data.title,
+          "content": data.content,
+          "image": null
+        });
       },
       invalidatesTags: ['Articles']
     }),
@@ -65,14 +74,31 @@ export const articlesApi = createApi({
     }),
     editArticle: builder.mutation<void, {id: number, data: ArticleInput}>({
       queryFn: async (article) => {
-        return await apiInstance.put(`/articles/${article.id}/`, article.data);
+        if (article.data.image.length > 0) {
+          const formData = new FormData();
+          formData.append("title", article.data.title);
+          formData.append("content", article.data.content);
+          formData.append("image", article.data.image[0] ?? null);
+          return await apiInstance.put(`/articles/${article.id}/`, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
+          })
+        }
+
+        return await apiInstance.put(`/articles/${article.id}/`, {
+          "title": article.data.title,
+          "content": article.data.content,
+          "image": null
+        });
       },
       invalidatesTags: ['Article']
     }),
     deleteArticle: builder.mutation<void, number>({
       queryFn: async (id) => {
         return await apiInstance.delete(`/articles/${id}/`);
-      }
+      },
+      invalidatesTags: ['Articles']
     })
   })
 })

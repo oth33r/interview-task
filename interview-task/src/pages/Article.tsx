@@ -22,6 +22,7 @@ const Article = () => {
     useDeleteArticleMutation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  console.log(article);
 
   useEffect(() => {
     if (isSuccess) {

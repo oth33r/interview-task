@@ -95,7 +95,15 @@ const EditArticle = ({ modalName, article }: NewModalProps) => {
             />
             <Error error={errors.content} />
           </div>
-          <div>image</div>
+          <div>
+            <Label
+              htmlFor="image"
+              className="font-semibold text-white uppercase"
+            >
+              Image
+            </Label>
+            <Input type="file" id="image" {...register("image")} />
+          </div>
           <button hidden ref={buttonRef} />
         </form>
       </CardContent>
